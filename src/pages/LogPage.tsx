@@ -4,10 +4,13 @@ import axios from "axios"
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const LogPage = () => {
-    const [screenshots, setScreenshots] = useState([]);
+    const [screenshotUrls, setScreenshotUrls] = useState([]);
+    const [logUrl, setLogUrl] = useState("");
     const [id, setId] = useState("");
     const fetchLogs = async () => {
-        setScreenshots((await axios.get(`${backendUrl}/screenshots?id=${id}`)).data);
+        const {logUrl, screenUrls} = (await axios.get(`${backendUrl}/logs?id=${id}`)).data;
+        setLogUrl(logUrl);
+        setScreenshotUrls(screenUrls);
     }
     const inputRef = useRef();
     console.log(backendUrl);
@@ -22,15 +25,15 @@ const LogPage = () => {
                 <div className="flex gap-10">
                     <div className="flex flex-col gap-2">
                         {
-                            screenshots.map(d => {
-                                return <a href={`/${id}/${d}`} className="rounded border border-gray-200 p-2" target="_blank">
-                                    {d}
+                            screenshotUrls.map(d => {
+                                return <a href={d} className="rounded border border-gray-200 p-2" target="_blank">
+                                    {d.split("/")[d.split("/").length - 1]}
                                 </a>
                             })
                         }
                     </div>
                     <div className="flex items-center justify-center text-blue-600">
-                        <a href={`/log/${id}`} target="_blank">Log file</a>
+                        <a href={logUrl} target="_blank">Log file</a>
                     </div>
                 </div>
 
