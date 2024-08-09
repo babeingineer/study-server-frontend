@@ -1,3 +1,4 @@
+import IdPage from "../pages/IdPage";
 import InvitePage from "../pages/InvitePage";
 import LogPage from "../pages/LogPage";
 
@@ -7,8 +8,12 @@ const routes = [
         element: <InvitePage />
     }, 
     {
-        path: "log",
+        path: "log/:id",
         element: <LogPage />
+    },
+    {
+        path: "ids",
+        element: <IdPage />
     }
 ];
 

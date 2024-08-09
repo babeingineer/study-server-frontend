@@ -1,27 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios"
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const LogPage = () => {
+    const { id } = useParams();
     const [screenshotUrls, setScreenshotUrls] = useState([]);
     const [logUrl, setLogUrl] = useState("");
-    const [id, setId] = useState("");
     const fetchLogs = async () => {
         const {logUrl, screenUrls} = (await axios.get(`${backendUrl}/logs?id=${id}`)).data;
         setLogUrl(logUrl);
         setScreenshotUrls(screenUrls);
     }
-    const inputRef = useRef();
-    console.log(backendUrl);
+    useEffect(() => {
+        fetchLogs();
+    }, [])
     return <>
         <div className="w-full h-full flex items-center justify-center relative">
             <div className="flex flex-col items-center gap-5">
-                <div className="flex gap-3">
-                    <div className="text-3xl">ID:</div>
-                    <input value={id} className="text-2xl rounded-xl outline-none border border-gray-200 py-1 px-3 text-gray-500 text-center" placeholder="Input Id." onChange={(ev) => {setId(ev.target.value)}} />
-                </div>
-                <button className="p-2 bg-blue-500 rounded-lg text-white" onClick={() => fetchLogs()}>Get Logs</button>
                 <div className="flex gap-10">
                     <div className="flex flex-col gap-2">
                         {
